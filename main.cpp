@@ -1,6 +1,7 @@
 /*
- read Fahrenheit temperatures
- and output to new Celsius file
+  Ryan Grunest 10/4/2024
+  read Fahrenheit temperatures
+  and output to new Celsius file
 */
 
 #include <iostream>
@@ -10,47 +11,45 @@
 
 using namespace std;
 
-void ConvertToCelsius(vector<int> &temperatures) {
+// read through file, convert temperatures to Celsius
+void ConvertToCelsius() {
   ifstream temperatureFS;
   ofstream temperatureOFS;
+
   string location;
+
   int temperature;
   int tempInCelsius;
 
+  temperatureFS.open("FahrenheitTemperature.txt"); // open Fahrenheit file stream
+  temperatureOFS.open("CelsiusTemperature.txt"); // open Celsius file stream
 
-  temperatureFS.open("FahrenheitTemperature.txt");
-  temperatureOFS.open("CelsiusTemperature.txt");
 
-
-  if (!temperatureFS.is_open()) {
+  if (!temperatureFS.is_open()) { // there was an error opening the Fahrenheit file
     cout << "Could not open file" << endl;
   } else {
     
-    while (!temperatureFS.fail()) {
-      temperatureFS >> location;
-      temperatureFS >> temperature;
+    while (!temperatureFS.fail()) { // read until end of fle
+      temperatureFS >> location; // get location
+      temperatureFS >> temperature; // get temperature
 
-      cout << "Location: " << location << endl;
-      cout << "Temperature: " << temperature << endl;
+      cout << "Location: " << location << endl; // output location to console
+      cout << "Temperature: " << temperature << endl; // output temperature to console
       
-      if (!temperatureFS.fail()) {
-        tempInCelsius = temperature - 32;
+      if (!temperatureFS.fail()) { // if it hasn't reached the end of the file
+        tempInCelsius = temperature - 32; // convert to celsius
         tempInCelsius = tempInCelsius * 5;
         tempInCelsius = tempInCelsius / 9;
 
-        temperatureOFS << location << " " << tempInCelsius << endl;
-
-        temperatures.push_back(temperature);
+        temperatureOFS << location << " " << tempInCelsius << endl; // write new value to Celsius file
       }
     }
 
-    temperatureFS.close();
-    temperatureOFS.close();
+    temperatureFS.close(); // close input stream
+    temperatureOFS.close(); // close output stream
   }
 }
 
 int main() {
-  vector<int> temperatures;
-
-  ConvertToCelsius(temperatures);
+  ConvertToCelsius();
 }
